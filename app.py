@@ -18,7 +18,7 @@ gender_categories, country_categories, cancer_categories = category_lists
 
 # App title
 st.markdown("<h1 style='text-align: center;'>📉 Cancer Severity Score Predictor</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>By Zhonghao Zhang</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>Developed by Zhonghao Zhang</p>", unsafe_allow_html=True)
 
 # Input fields
 age = st.number_input("Age", min_value=10, max_value=110, value=50)
@@ -88,14 +88,22 @@ if st.button("Predict"):
     # Reorder columns: Rank, Factors, Weights
     top_df = top_df[["Rank", "Factors", "Weights"]]
 
-    st.subheader("🔍 Feature Importance")
-    st.dataframe(
+    # Prepare styled HTML
+    styled_table = (
         top_df.style
-        .set_properties(**{'text-align': 'center'})
-        .set_table_styles(
-            [{'selector': 'th', 'props': [('text-align', 'center')]}]
-        ),
-        hide_index=True,
-        use_container_width=True
+        .set_table_styles([
+            {"selector": "th", "props": [("text-align", "center")]},
+            {"selector": "td", "props": [("text-align", "center")]}
+        ])
+        .hide(axis="index")
+        .to_html()
     )
+
+    # Display title and table centered
+    st.markdown("### 🔍 Feature Importance", unsafe_allow_html=True)
+    st.markdown(
+        f"<div style='display: flex; justify-content: center;'>{styled_table}</div>",
+        unsafe_allow_html=True
+    )
+
 
