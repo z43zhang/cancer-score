@@ -74,15 +74,22 @@ if st.button("Predict"):
 
     # Create importance DataFrame
     importance_df = pd.DataFrame({
-        "Feature": [name_map.get(f, f) for f in feature_names],
-        "Coefficient": importances
+        "Factors": [name_map.get(f, f) for f in feature_names],
+        "Weights": importances
     })
 
-    # Show top 5 by absolute value
-    top_df = importance_df.reindex(importance_df["Coefficient"].abs().sort_values(ascending=False).index).head(5)
+    # Sort and get top 5
+    top_df = importance_df.reindex(importance_df["Weights"].abs().sort_values(ascending=False).index).head(5).reset_index(drop=True)
+    top_df.index += 1  # Start index from 1
 
-    # Display
+    # Convert to HTML and center-align
+    styled_table = top_df.style.set_table_styles([
+        {"selector": "th", "props": [("text-align", "center")]},
+        {"selector": "td", "props": [("text-align", "center")]}
+    ]).hide(axis="index").to_html()
+
     st.subheader("🔍 Feature Importance")
-    st.dataframe(top_df)
+    st.markdown(styled_table, unsafe_allow_html=True)
+
 
 
