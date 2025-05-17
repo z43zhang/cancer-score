@@ -88,19 +88,21 @@ if st.button("Predict"):
     # Reorder columns: Rank, Factors, Weights
     top_df = top_df[["Rank", "Factors", "Weights"]]
 
-    # Convert to HTML and center-align
+    # Style the table
     styled_table = top_df.style.set_table_styles([
         {"selector": "th", "props": [("text-align", "center")]},
         {"selector": "td", "props": [("text-align", "center")]}
     ]).hide(axis="index").to_html()
 
-    # Center title + table
-    st.markdown(f"""
-        <div style="text-align: center;">
+    # Properly centered layout without escaping the closing </div>
+    st.markdown(
+        """<div style='text-align: center;'>
             <h3>🔍 Feature Importance</h3>
-            {styled_table}
-        </div>
-    """, unsafe_allow_html=True)
+        </div>""",
+        unsafe_allow_html=True
+    )
+
+    st.markdown(styled_table, unsafe_allow_html=True)
 
 
 
