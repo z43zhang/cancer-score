@@ -96,7 +96,7 @@ if st.button("Predict"):
             {"selector": "td", "props": [("text-align", "center")]}
         ])
         .hide(axis="index")
-        .to_html()
+        .to_html(escape=False)
     )
 
     # Wrap the table in a centered container without unescaped tags
@@ -109,9 +109,3 @@ if st.button("Predict"):
 
     # Show the table
     st.markdown(html, unsafe_allow_html=True)
-
-
-
-
-
-
