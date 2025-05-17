@@ -57,16 +57,14 @@ if st.button("Predict"):
 
     st.success(f"🎯 Predicted Cancer Severity Score: **{prediction:.2f}**")
 
-    # SHAP explanation
-    st.subheader("🔍 SHAP Feature Contribution")
+    importances = model.coef_
+    feature_names = preprocessor.get_feature_names_out()
 
-    # Use model and feature names for explainer
-    explainer = shap.LinearExplainer(model, input_transformed, feature_names=preprocessor.get_feature_names_out())
+    st.subheader("🔍 Feature Importance")
+    importance_df = pd.DataFrame({
+        "Feature": feature_names,
+        "Coefficient": importances
+    }).sort_values(by="Coefficient", key=abs, ascending=False)
 
-    shap_values = explainer(input_transformed)
-
-    # Plot waterfall and display in Streamlit
-    shap.plots.waterfall(shap_values[0], max_display=6, show=False)
-    fig = plt.gcf()  # Get current figure created by SHAP
-    st.pyplot(fig)
+    st.dataframe(importance_df.head(10))
 
