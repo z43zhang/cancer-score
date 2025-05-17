@@ -57,14 +57,32 @@ if st.button("Predict"):
 
     st.success(f"🎯 Predicted Cancer Severity Score: **{prediction:.2f}**")
 
+    # Get coefficients and feature names
     importances = model.coef_
     feature_names = preprocessor.get_feature_names_out()
 
-    st.subheader("🔍 Feature Importance")
-    importance_df = pd.DataFrame({
-        "Feature": feature_names,
-        "Coefficient": importances
-    }).sort_values(by="Coefficient", key=abs, ascending=False)
+    # Map raw feature names to human-readable labels
+    name_map = {
+        "num__Smoking": "Smoking",
+        "num__Genetic_Risk": "Genetic Risk",
+        "num__Air_Pollution": "Air Pollution",
+        "num__Alcohol_Use": "Alcohol Use",
+        "num__Obesity_Level": "Obesity Level",
+        "num__Age": "Age",
+        "num__Year": "Year of Diagnosis",
+    }
 
-    st.dataframe(importance_df.head(10))
+    # Create importance DataFrame
+    importance_df = pd.DataFrame({
+        "Factors": [name_map.get(f, f) for f in feature_names],
+        "Weights": importances
+    })
+
+    # Show top 5 by absolute value
+    top_df = importance_df.reindex(importance_df["Coefficient"].abs().sort_values(ascending=False).index).head(5)
+
+    # Display
+    st.subheader("🔍 Feature Importance")
+    st.dataframe(top_df)
+
 
