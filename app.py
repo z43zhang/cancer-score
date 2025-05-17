@@ -99,8 +99,9 @@ if st.button("Predict"):
         .to_html()
     )
 
-    # Display title and table centered
-    st.markdown("### 🔍 Feature Importance", unsafe_allow_html=True)
+    # Centered subtitle
+    st.markdown("<h3 style='text-align: center;'>🔍 Feature Importance</h3>", unsafe_allow_html=True)
+
     st.markdown(
         f"<div style='display: flex; justify-content: center;'>{styled_table}</div>",
         unsafe_allow_html=True
