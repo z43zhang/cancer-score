@@ -74,8 +74,8 @@ if st.button("Predict"):
 
     # Create importance DataFrame
     importance_df = pd.DataFrame({
-        "Factors": [name_map.get(f, f) for f in feature_names],
-        "Weights": importances
+        "Feature": [name_map.get(f, f) for f in feature_names],
+        "Coefficient": importances
     })
 
     # Show top 5 by absolute value
