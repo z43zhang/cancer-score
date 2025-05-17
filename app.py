@@ -82,7 +82,8 @@ if st.button("Predict"):
     top_df = importance_df.reindex(importance_df["Weights"].abs().sort_values(ascending=False).index).head(5).reset_index(drop=True)
     top_df.index += 1  # Start index from 1
     top_df["Rank"] = top_df.index  # Create Rank column
-    top_df["Weights"] = top_df["Weights"].round(4)  # Round to 4 decimals
+    top_df["Weights"] = top_df["Weights"].map(lambda x: f"{x:.2f}".rstrip("0").rstrip("."))
+
 
     # Reorder columns: Rank, Factors, Weights
     top_df = top_df[["Rank", "Factors", "Weights"]]
