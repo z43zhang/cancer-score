@@ -81,6 +81,11 @@ if st.button("Predict"):
     # Sort and get top 5
     top_df = importance_df.reindex(importance_df["Weights"].abs().sort_values(ascending=False).index).head(5).reset_index(drop=True)
     top_df.index += 1  # Start index from 1
+    top_df["Rank"] = top_df.index  # Create Rank column
+    top_df["Weights"] = top_df["Weights"].round(4)  # Round to 4 decimals
+
+    # Reorder columns: Rank, Factors, Weights
+    top_df = top_df[["Rank", "Factors", "Weights"]]
 
     # Convert to HTML and center-align
     styled_table = top_df.style.set_table_styles([
