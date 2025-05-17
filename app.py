@@ -88,14 +88,18 @@ if st.button("Predict"):
     # Reorder columns: Rank, Factors, Weights
     top_df = top_df[["Rank", "Factors", "Weights"]]
 
-    # Replace all the HTML generation code with:
-    st.subheader("🔍 Feature Importance")
-    st.dataframe(
-        top_df.style
-        .set_table_styles([
-            {"selector": "th", "props": [("text-align", "center")]},
-            {"selector": "td", "props": [("text-align", "center")]}
-        ]),
-        hide_index=True,
-        use_container_width=True
+    # Get the raw HTML without wrapper
+    table_html = top_df.to_html(
+        index=False,
+        classes='my-table',
+        escape=False,
+        justify='center'
     )
+
+    # Simple centered container
+    st.markdown(f"""
+    <div style="text-align: center;">
+        <h3>🔍 Feature Importance</h3>
+        {table_html}
+    </div>
+    """, unsafe_allow_html=True)
