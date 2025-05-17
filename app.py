@@ -94,15 +94,17 @@ if st.button("Predict"):
         {"selector": "td", "props": [("text-align", "center")]}
     ]).hide(axis="index").to_html()
 
-    # Properly centered layout without escaping the closing </div>
+    # Wrap both heading and table in one centered div
     st.markdown(
-        """<div style='text-align: center;'>
+        f"""
+        <div style='text-align: center;'>
             <h3>🔍 Feature Importance</h3>
-        </div>""",
+            {styled_table}
+        </div>
+        """,
         unsafe_allow_html=True
     )
 
-    st.markdown(styled_table, unsafe_allow_html=True)
 
 
 
