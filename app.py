@@ -18,7 +18,7 @@ gender_categories, country_categories, cancer_categories = category_lists
 
 # App title
 st.markdown("<h1 style='text-align: center;'>📉 Cancer Severity Score Predictor</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>Developed by Zhonghao Zhang</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: right;'>Developed by Zhonghao Zhang</p>", unsafe_allow_html=True)
 
 # Input fields
 age = st.number_input("Age", min_value=10, max_value=110, value=50)
