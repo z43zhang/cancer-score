@@ -20,6 +20,15 @@ gender_categories, country_categories, cancer_categories = category_lists
 st.markdown("<h1 style='text-align: center;'>📉 Cancer Severity Score Predictor</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: right;'>Developed by Zhonghao Zhang</p>", unsafe_allow_html=True)
 
+with st.expander("ℹ️ How this model works"):
+    st.markdown("""
+    - ✅ This model predicts **cancer severity scores** using patient lifestyle and medical features.
+    - 🔍 It was trained using ElasticNet regression after preprocessing with a full pipeline.
+    - 📊 Top influencing factors include Smoking, Genetic Risk, and Air Pollution.
+    - 📈 Interpretability is built-in using model coefficients.
+    """)
+
+
 # Input fields
 age = st.number_input("Age", min_value=10, max_value=110, value=50)
 gender = st.selectbox("Gender", gender_categories)
@@ -100,7 +109,7 @@ if st.button("Predict"):
     )
 
     # Centered subtitle
-    st.markdown("<h3 style='text-align: center;'>🔍 Feature Importance</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center;'>🔍 Top 5 Factors Contributing to Severity</h3>", unsafe_allow_html=True)
 
     st.markdown(
         f"<div style='display: flex; justify-content: center;'>{styled_table}</div>",
