@@ -20,9 +20,9 @@ gender_categories, country_categories, cancer_categories = category_lists
 st.markdown("<h1 style='text-align: center;'>📉 Cancer Severity Score Predictor</h1>", unsafe_allow_html=True)
 st.markdown("<p style='text-align: right;'>Developed by Zhonghao Zhang</p>", unsafe_allow_html=True)
 
-with st.expander("ℹ️ How this model works"):
+with st.expander("📖 How this model works"):
     st.markdown("""
-    - ✅ This model predicts **cancer severity scores** using patient lifestyle and medical features.
+    - ✅ Predicts **cancer severity scores** using patient lifestyle and medical data.
     - 🔍 It was trained using ElasticNet regression after preprocessing with a full pipeline.
     - 📊 Top influencing factors include Smoking, Genetic Risk, and Air Pollution.
     - 📈 Interpretability is built-in using model coefficients.
