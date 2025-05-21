@@ -11,24 +11,6 @@ import matplotlib.pyplot as plt
 preprocessor = joblib.load("models/preprocessor.pkl")
 model = joblib.load("models/elasticnet_tuned.pkl")
 
-# SHAP explainer for ElasticNet
-# Get the transformed training data shape (dummy sample to initialize explainer properly)
-X_background = np.zeros((1, preprocessor.transform(pd.DataFrame([{
-    "Age": 50,
-    "Gender": gender_categories[0],
-    "Country_Region": country_categories[0],
-    "Year": 2015,
-    "Genetic_Risk": 5.0,
-    "Air_Pollution": 5.0,
-    "Alcohol_Use": 5.0,
-    "Smoking": 5.0,
-    "Obesity_Level": 5.0,
-    "Cancer_Type": cancer_categories[0]
-}])).shape[1]))
-
-explainer = shap.LinearExplainer(model, X_background)
-
-
 # Access OneHotEncoder inside the "cat" pipeline
 encoder = preprocessor.named_transformers_["cat"].named_steps["onehot"]
 category_lists = encoder.categories_
@@ -63,7 +45,7 @@ cancer_type = st.selectbox("Cancer Type", cancer_categories)
 
 # Predict button
 if st.button("Predict"):
-    # Construct input DataFrame
+    # Build input dictionary from UI
     input_dict = {
         "Age": age,
         "Gender": gender,
@@ -78,18 +60,20 @@ if st.button("Predict"):
     }
     input_df = pd.DataFrame([input_dict])
 
-    # Preprocess & predict
+    # Transform input and make prediction
     input_transformed = preprocessor.transform(input_df)
     prediction = model.predict(input_transformed)[0]
-
     st.success(f"🎯 Predicted Cancer Severity Score: **{prediction:.2f}**")
 
-    # Get SHAP values for the instance
+    # SHAP explanation
+    background = np.zeros((1, input_transformed.shape[1]))
+    explainer = shap.LinearExplainer(model, background)
     shap_values = explainer(input_transformed)[0].values
 
+    # Get feature names
     feature_names = preprocessor.get_feature_names_out()
 
-    # Map raw feature names to human-readable labels
+    # Map to readable names
     name_map = {
         "num__Smoking": "Smoking",
         "num__Genetic_Risk": "Genetic Risk",
@@ -100,22 +84,20 @@ if st.button("Predict"):
         "num__Year": "Year of Diagnosis",
     }
 
-    # Create dynamic SHAP dataframe
+    # Build SHAP DataFrame
     shap_df = pd.DataFrame({
         "Factors": [name_map.get(f, f) for f in feature_names],
         "SHAP Value": shap_values
     })
 
-    # Sort by absolute SHAP value
-    top_df = shap_df.reindex(shap_df["SHAP Value"].abs().sort_values(ascending=False).index).head(5).reset_index(
-        drop=True)
+    # Sort and get top 5
+    top_df = shap_df.reindex(shap_df["SHAP Value"].abs().sort_values(ascending=False).index).head(5).reset_index(drop=True)
     top_df.index += 1
     top_df["Rank"] = top_df.index
     top_df["SHAP Value"] = top_df["SHAP Value"].map(lambda x: f"{x:.2f}".rstrip("0").rstrip("."))
-
-    # Reorder for display
     top_df = top_df[["Rank", "Factors", "SHAP Value"]]
 
+    # Styled table
     styled_table = (
         top_df.style
         .set_table_styles([
@@ -128,6 +110,7 @@ if st.button("Predict"):
 
     st.markdown("<h3 style='text-align: center;'>🔍 Key Factors for This Prediction</h3>", unsafe_allow_html=True)
     st.markdown(f"<div style='display: flex; justify-content: center;'>{styled_table}</div>", unsafe_allow_html=True)
+
 
 
 
