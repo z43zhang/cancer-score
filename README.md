@@ -1,6 +1,6 @@
 # 🌐 **Live Demo**: [Click here to try it out](https://cancer-score.streamlit.app/)
 
-![App Preview](assets/app_preview.png)
+![App Preview](https://github.com/z43zhang/cancer-score/blob/main/assets/demo_image.png)
 
 ### 🩺 A machine learning regression app for predicting cancer severity scores using patient lifestyle, environmental, and clinical data.
 
