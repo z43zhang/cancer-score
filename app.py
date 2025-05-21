@@ -12,7 +12,21 @@ preprocessor = joblib.load("models/preprocessor.pkl")
 model = joblib.load("models/elasticnet_tuned.pkl")
 
 # SHAP explainer for ElasticNet
-explainer = shap.Explainer(model, feature_names=preprocessor.get_feature_names_out())
+# Get the transformed training data shape (dummy sample to initialize explainer properly)
+X_background = np.zeros((1, preprocessor.transform(pd.DataFrame([{
+    "Age": 50,
+    "Gender": gender_categories[0],
+    "Country_Region": country_categories[0],
+    "Year": 2015,
+    "Genetic_Risk": 5.0,
+    "Air_Pollution": 5.0,
+    "Alcohol_Use": 5.0,
+    "Smoking": 5.0,
+    "Obesity_Level": 5.0,
+    "Cancer_Type": cancer_categories[0]
+}])).shape[1]))
+
+explainer = shap.LinearExplainer(model, X_background)
 
 
 # Access OneHotEncoder inside the "cat" pipeline
@@ -72,6 +86,7 @@ if st.button("Predict"):
 
     # Get SHAP values for the instance
     shap_values = explainer(input_transformed)[0].values
+
     feature_names = preprocessor.get_feature_names_out()
 
     # Map raw feature names to human-readable labels
