@@ -11,6 +11,10 @@ import matplotlib.pyplot as plt
 preprocessor = joblib.load("models/preprocessor.pkl")
 model = joblib.load("models/elasticnet_tuned.pkl")
 
+# SHAP explainer for ElasticNet
+explainer = shap.Explainer(model, feature_names=preprocessor.get_feature_names_out())
+
+
 # Access OneHotEncoder inside the "cat" pipeline
 encoder = preprocessor.named_transformers_["cat"].named_steps["onehot"]
 category_lists = encoder.categories_
@@ -66,8 +70,8 @@ if st.button("Predict"):
 
     st.success(f"🎯 Predicted Cancer Severity Score: **{prediction:.2f}**")
 
-    # Get coefficients and feature names
-    importances = model.coef_
+    # Get SHAP values for the instance
+    shap_values = explainer(input_transformed)[0].values
     feature_names = preprocessor.get_feature_names_out()
 
     # Map raw feature names to human-readable labels
@@ -81,23 +85,22 @@ if st.button("Predict"):
         "num__Year": "Year of Diagnosis",
     }
 
-    # Create importance DataFrame
-    importance_df = pd.DataFrame({
+    # Create dynamic SHAP dataframe
+    shap_df = pd.DataFrame({
         "Factors": [name_map.get(f, f) for f in feature_names],
-        "Weights": importances
+        "SHAP Value": shap_values
     })
 
-    # Sort and get top 5
-    top_df = importance_df.reindex(importance_df["Weights"].abs().sort_values(ascending=False).index).head(5).reset_index(drop=True)
-    top_df.index += 1  # Start index from 1
-    top_df["Rank"] = top_df.index  # Create Rank column
-    top_df["Weights"] = top_df["Weights"].map(lambda x: f"{x:.2f}".rstrip("0").rstrip("."))
+    # Sort by absolute SHAP value
+    top_df = shap_df.reindex(shap_df["SHAP Value"].abs().sort_values(ascending=False).index).head(5).reset_index(
+        drop=True)
+    top_df.index += 1
+    top_df["Rank"] = top_df.index
+    top_df["SHAP Value"] = top_df["SHAP Value"].map(lambda x: f"{x:.2f}".rstrip("0").rstrip("."))
 
+    # Reorder for display
+    top_df = top_df[["Rank", "Factors", "SHAP Value"]]
 
-    # Reorder columns: Rank, Factors, Weights
-    top_df = top_df[["Rank", "Factors", "Weights"]]
-
-    # Prepare styled HTML
     styled_table = (
         top_df.style
         .set_table_styles([
@@ -108,12 +111,8 @@ if st.button("Predict"):
         .to_html()
     )
 
-    # Centered subtitle
-    st.markdown("<h3 style='text-align: center;'>🔍 Top 5 Factors Contributing to Severity</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='text-align: center;'>🔍 Key Factors for This Prediction</h3>", unsafe_allow_html=True)
+    st.markdown(f"<div style='display: flex; justify-content: center;'>{styled_table}</div>", unsafe_allow_html=True)
 
-    st.markdown(
-        f"<div style='display: flex; justify-content: center;'>{styled_table}</div>",
-        unsafe_allow_html=True
-    )
 
 
