@@ -65,6 +65,17 @@ if st.button("Predict"):
     prediction = model.predict(input_transformed)[0]
     st.success(f"🎯 Predicted Cancer Severity Score: **{prediction:.2f}**")
 
+    st.markdown("""
+    ### 📘 Severity Score Reference
+
+    | Severity Level | Score Range   |
+    |----------------|---------------|
+    | 🟢 Low         | 0.0 – 2.99    | 
+    | 🟡 Moderate    | 3.0 – 4.99    | 
+    | 🟠 High        | 5.0 – 6.99    | 
+    | 🔴 Very High   | 7.0 – 9.99   | 
+    """)
+
     # SHAP: Create background with correct dimensions (same shape as input)
     background = np.zeros((1, input_transformed.shape[1]))
 
