@@ -24,7 +24,12 @@ category_lists = encoder.categories_
 gender_categories, country_categories, cancer_categories = category_lists
 
 # App title
-st.markdown("<h1 style='text-align: center;'>📉 Cancer Severity Score Predictor</h1>", unsafe_allow_html=True)
+st.markdown("""
+<h1 style='text-align: center; white-space: nowrap;'>
+    🔬 Cancer Severity Risk Estimator
+</h1>
+""", unsafe_allow_html=True)
+
 st.markdown("<p style='text-align: right;'>Developed by Zhonghao Zhang</p>", unsafe_allow_html=True)
 
 with st.expander("📖 How this model works"):
