@@ -141,7 +141,6 @@ The **ElasticNet (Tuned)** model was selected for its:
 
 > 🎯 Try it live: [Click here to test the app](https://cancer-score.streamlit.app/)
 
-
 ---
 
 # 🧪 Example Prediction
@@ -151,31 +150,29 @@ The **ElasticNet (Tuned)** model was selected for its:
 ```
 Age = 50
 Gender = Male
-Country = UK
-Year of Diagnosis = 2015
+Country = Germany
+Year of Diagnosis = 2012
 Cancer Type = Liver
-Smoking = 3.8
-Genetic Risk = 3.5
-Air Pollution = 4.6
-Obesity Level = 7.3
-Alcohol Use = 6.2
+Smoking = 2.2
+Genetic Risk = 5.8
+Air Pollution = 4.5
+Obesity Level = 7.2
+Alcohol Use = 6.5
 ```
 
-### 🎯 Output:
+### 📋 Output:
 
 ```
-Predicted Cancer Severity Score: 4.75
+🎯 Predicted Cancer Severity Score: 4.91
+
+ℹ️ Interpretation: This score falls in the category: 🟡 Moderate
+
+📊 This score ranks in the 48.42th percentile of the entire database
 ```
 
-### 🔍 Top Contributing Features:
+### 🔍 Feature Impact Breakdown (SHAP Waterfall Plot):
 
-```
-1. Smoking           | 0.58
-2. Genetic Risk      | 0.58
-3. Air Pollution     | 0.44
-4. Alcohol Use       | 0.44
-5. Obesity Level     | 0.29
-```
+![App Preview](https://github.com/z43zhang/cancer-score/blob/main/assets/example_prediction.png)
 
 ---
 
