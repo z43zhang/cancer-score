@@ -8,12 +8,15 @@
 
 # 🚀 Features
 
-* 🔢 **Multimodal Input Handling** — Accepts both numeric (e.g., Age, Risk Scores) and categorical (e.g., Gender, Country, Cancer Type) features via interactive widgets
-* 🧰 **Full scikit-learn Pipeline** — Modular ColumnTransformer handles imputation, encoding, and scaling
-* 🤖 **Tuned ElasticNet Regression** — Balances L1 and L2 regularization with optimal hyperparameters (via Optuna)
-* 📉 **Dimensionality Insights** — PCA applied to analyze intrinsic data structure and variance retention
-* 📊 **Model Interpretability** — Displays top 5 contributing features dynamically based on model coefficients
-* ⚙️ **Live Inference** — Real-time prediction with preprocessing + model inference pipeline
+* 📊 **EDA & Data Cleaning** — Explored variable distributions, outliers, feature correlations, and groupwise patterns
+* 🔢 **Multimodal Feature Support** — Handled both numerical (e.g., Age, Risk Factors) and categorical (e.g., Gender, Region, Cancer Type) data via preprocessing pipeline
+* 🧰 **End-to-End ML Pipeline** — Built with `ColumnTransformer` for modular imputation, encoding, and scaling
+* 🔎 **Model Exploration** — Benchmarked a wide range of regressors: Linear, Ridge, Lasso, ElasticNet, Bayesian Ridge, KNN, CatBoost, LightGBM, and Stacking
+* 🔧 **Hyperparameter Tuning** — Fine-tuned top models using `GridSearchCV` and `Optuna`, comparing baseline vs optimized performance
+* 📉 **PCA-Based Dimensionality Analysis** — Used PCA to assess feature redundancy and evaluated models under dimensionality constraints
+* 🤖 **Final Model: ElasticNet (Tuned)** — Chosen for strong generalization, stability across folds, and clinical interpretability
+* ⚙️ **Live Inference App** — Real-time prediction with interactive UI and SHAP waterfall visualization, deployed on Streamlit Cloud
+* 📘 **Severity Reference Guide** — Shows percentile ranking within the dataset and provides interpretation of predicted severity level 
 
 ---
 
@@ -34,13 +37,17 @@
 
 # 🛠️ Tech Stack
 
-| Component                | Description                           |
-| ------------------------ | ------------------------------------- |
-| `pandas`, `joblib`       | Data handling + model/pipeline saving |
-| `scikit-learn`           | Preprocessing, Pipelines, ElasticNet  |
-| `optuna`, `GridSearchCV` | Hyperparameter tuning                 |
-| `matplotlib`, `shap`     | Interpretability & visualization      |
-| `streamlit`              | Frontend and deployment engine        |
+| **Component**            | **Description**                                                 |
+| ------------------------ | --------------------------------------------------------------- |
+| `pandas`, `numpy`        | Data manipulation, statistical computations                     |
+| `matplotlib`, `seaborn`  | Data visualization for EDA, correlation, PCA, and distributions |
+| `scikit-learn`           | Pipelines, preprocessing, PCA, regression models                |
+| `joblib`                 | Model and pipeline saving/loading                               |
+| `optuna`, `GridSearchCV` | Hyperparameter tuning for both linear and tree-based models     |
+| `shap`                   | SHAP-based interpretability for local and global explanations   |
+| `catboost`, `lightgbm`   | Advanced tree-based regression models                           |
+| `streamlit`              | Frontend interface and app deployment                           |
+
 
 ---
 
@@ -125,7 +132,7 @@ The **ElasticNet (Tuned)** model was selected for its:
 
 ---
 
-## 🚀 Deployment (app.py)
+## 🖥️ Deployment (app.py)
 
 - Built with `Streamlit` for real-time predictions
 - Loads `elasticnet_tuned.pkl` and `preprocessor.pkl`
@@ -153,20 +160,9 @@ Alcohol Use = 6.5
 
 ### 📋 Output:
 
-```
-🎯 Predicted Cancer Severity Score: 4.91
-
-ℹ️ Interpretation: This score falls in the category: 🟡 Moderate
-
-📊 This score ranks in the 48.42th percentile of the entire database
-```
-
-### 🔍 Feature Impact Breakdown (SHAP Waterfall Plot):
-
 ![App Preview](https://github.com/z43zhang/cancer-score/blob/main/assets/example_prediction.png)
 
 ---
-
 
 # 🛠️ Installation
 
