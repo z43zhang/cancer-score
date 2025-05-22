@@ -80,7 +80,7 @@ if st.button("Predict"):
         level = "🟠 High"
     else:
         level = "🔴 Very High"
-    st.info(f"**Interpretation:** This score falls in the category: {level}")
+    st.info(f"ℹ️ **Interpretation:** This score falls in the category: {level}")
 
     # Rank & percentile calculation
     percentile = (score_distribution < prediction).mean() * 100
@@ -108,7 +108,7 @@ if st.button("Predict"):
     )
 
     # Waterfall plot for this instance
-    st.markdown("### 📊 SHAP Waterfall Plot (Feature Impact Breakdown)")
+    st.markdown("### 🔎 Feature Impact Breakdown (SHAP Waterfall Plot)")
     fig, ax = plt.subplots(figsize=(8, 5))
     shap.plots.waterfall(shap_values[0], max_display=10, show=False)
     st.pyplot(fig)
