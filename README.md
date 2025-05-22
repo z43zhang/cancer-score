@@ -132,15 +132,6 @@ The **ElasticNet (Tuned)** model was selected for its:
 - Interactive inputs + top feature breakdown
 - Fully hosted via [Streamlit Cloud](https://cancer-score.streamlit.app/)
 
-```python
-# app.py handles:
-# - Form input
-# - Joblib-based model loading
-# - Top 5 feature weights display using HTML-styled tables
-```
-
-> 🎯 Try it live: [Click here to test the app](https://cancer-score.streamlit.app/)
-
 ---
 
 # 🧪 Example Prediction
