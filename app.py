@@ -86,7 +86,8 @@ if st.button("Predict"):
     percentile = (score_distribution < prediction).mean() * 100
     rank = (score_distribution < prediction).sum() + 1  # Rank starts from 1
     total = len(score_distribution)
-    st.markdown(f"📊 This score ranks in the **{percentile:.2f}th percentile** of the entire database")
+
+    st.info(f"📊 This score ranks in the **{percentile:.2f}th percentile** of the entire database")
 
     # SHAP: Create background with correct dimensions (same shape as input)
     background = np.zeros((1, input_transformed.shape[1]))
